@@ -23,7 +23,7 @@ static void TaskManagerMenu(string[] taskList)
             taskList = AddTask(taskList);
             break;
         case "3":
-            // Remove task function
+            RemoveTask(taskList);
             break;
         case "q":
             Console.WriteLine("Goodbye!");
@@ -64,7 +64,7 @@ static string[] AddTask(string[] taskList)
                 taskList[i] = newTask;
                 break;
             }
-                    }
+        }
         Console.WriteLine("It's been added to the list");
         Console.ReadKey();
         TaskManagerMenu(taskList);
@@ -78,5 +78,50 @@ static string[] AddTask(string[] taskList)
         TaskManagerMenu(taskList);
         return taskList;
     }
+    //resize array if all 5 spot are full
+}
+static string[] RemoveTask(string[] taskList)
+{
+    TaskListDisplay(taskList);
+    string message = "Enter Item to remove: ";
+    int item = PromptUserForNum(message);
+    if (item > 0 && item <= taskList.Length)
+    {
+        taskList[item-1] = null;
+        for (int i = item - 1; i < taskList.Length - 1; i++)
+        {
+            taskList[i] = taskList[i + 1];
+        }
+        taskList[taskList.Length - 1] = null;
+    }
     
+
+    Console.ReadKey();
+    TaskManagerMenu(taskList);
+    return taskList;
+}
+static string PromptUser(string message)
+{
+    Console.Write(message);
+    return Console.ReadLine();
+}
+static int PromptUserForNum(string message)
+{
+    bool isValid = false;
+    int numb;
+    do
+    {
+
+        string input = PromptUser(message);
+
+        if (int.TryParse(input, out numb))
+        {
+            isValid = true;
+        }
+        else
+        {
+            Console.WriteLine("That is not a valid number, try again!");
+        }
+    } while (!isValid);
+    return numb;
 }
