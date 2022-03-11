@@ -21,7 +21,7 @@ static void TaskManager()
             ViewTask(taskList);
             break;
         case "2":
-            // Add task function
+            AddTask(taskList);
             break;
         case "3":
             // Remove task function
@@ -49,4 +49,11 @@ static void ViewTask(string[] taskList)
     Console.ReadKey();
     TaskManager();
 
+}
+static void AddTask(string[] taskList)
+{
+    Console.Write("Enter Task: ");
+    string newTask = Console.ReadLine();
+    bool status = Array.Exists(taskList, element => element == newTask);
+    Console.WriteLine($"{status}");
 }
