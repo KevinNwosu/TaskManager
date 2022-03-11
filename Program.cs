@@ -1,9 +1,8 @@
-﻿TaskManager();
-
-static void TaskManager()
+﻿string[] taskList = new string[5];
+TaskManagerMenu(taskList);
+static void TaskManagerMenu(string[] taskList)
 {
-    string[] taskList = { "Cook", "Clean", "Laundry", "Mow The Lawn", "Work" };
-
+    
     Console.Clear();
     Console.WriteLine("Task Manager");
     Console.WriteLine("=================================");
@@ -21,7 +20,7 @@ static void TaskManager()
             ViewTask(taskList);
             break;
         case "2":
-            AddTask(taskList);
+            taskList = AddTask(taskList);
             break;
         case "3":
             // Remove task function
@@ -39,6 +38,7 @@ static void TaskListDisplay(string[] taskList)
     Console.WriteLine("Task List");
     Console.WriteLine("=================================");
     for (int i = 0; i < taskList.Length; i++)
+        if (!string.IsNullOrEmpty(taskList[i]))
         Console.WriteLine($"{i + 1}. {taskList[i]}");
     Console.WriteLine("=================================");
 }
@@ -47,13 +47,36 @@ static void ViewTask(string[] taskList)
     TaskListDisplay(taskList);
     Console.WriteLine("Press any key to continue...");
     Console.ReadKey();
-    TaskManager();
+    TaskManagerMenu(taskList);
 
 }
-static void AddTask(string[] taskList)
+static string[] AddTask(string[] taskList)
 {
     Console.Write("Enter Task: ");
     string newTask = Console.ReadLine();
     bool status = Array.Exists(taskList, element => element == newTask);
-    Console.WriteLine($"{status}");
+    if (!status)
+    {
+        for (int i = 0; i < taskList.Length; i++)
+        {
+            if (string.IsNullOrEmpty(taskList[i]))
+            {
+                taskList[i] = newTask;
+                break;
+            }
+                    }
+        Console.WriteLine("It's been added to the list");
+        Console.ReadKey();
+        TaskManagerMenu(taskList);
+        return taskList;    
+
+    }
+    else
+    {
+        Console.WriteLine("It's on the list!");
+        Console.ReadKey();
+        TaskManagerMenu(taskList);
+        return taskList;
+    }
+    
 }
